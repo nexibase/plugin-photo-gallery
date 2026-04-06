@@ -17,7 +17,7 @@ interface Photo {
   viewCount: number
   likeCount: number
   createdAt: string
-  author: { id: number; nickname: string }
+  user: { id: number; nickname: string }
 }
 
 interface PhotoDetailProps {
@@ -91,7 +91,7 @@ export default function PhotoDetail({ photoId }: PhotoDetailProps) {
 
   const canDelete =
     photo &&
-    (currentUserId === photo.author.id ||
+    (currentUserId === photo.user.id ||
       currentUserRole === "admin" ||
       currentUserRole === "manager")
 
@@ -169,7 +169,7 @@ export default function PhotoDetail({ photoId }: PhotoDetailProps) {
           <h1 className="text-xl font-bold">{photo.title}</h1>
 
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>{photo.author.nickname}</span>
+            <span>{photo.user.nickname}</span>
             <span className="flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5" />
               {new Date(photo.createdAt).toLocaleDateString("ko-KR", {

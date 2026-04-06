@@ -1,6 +1,6 @@
 model GalleryPhoto {
   id            Int              @id @default(autoincrement())
-  authorId      Int
+  userId        Int
   title         String           @db.VarChar(200)
   description   String?          @db.Text
   imagePath     String           @db.VarChar(500)
@@ -11,7 +11,7 @@ model GalleryPhoto {
   updatedAt     DateTime         @updatedAt
   reactions     PhotoReaction[]
 
-  @@index([authorId])
+  @@index([userId])
   @@index([createdAt])
   @@fulltext([title, description])
   @@map("gallery_photos")

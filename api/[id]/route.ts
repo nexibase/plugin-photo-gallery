@@ -28,14 +28,14 @@ export async function GET(
     })
 
     // 별도 쿼리로 작성자 정보 조회
-    const author = await prisma.user.findUnique({
-      where: { id: rawPhoto.authorId },
+    const userInfo = await prisma.user.findUnique({
+      where: { id: rawPhoto.userId },
       select: { id: true, nickname: true, image: true },
     })
 
     const photo = {
       ...rawPhoto,
-      author: author || { id: rawPhoto.authorId, nickname: '알 수 없음', image: null },
+      user: userInfo || { id: rawPhoto.userId, nickname: '알 수 없음', image: null },
     }
 
     return NextResponse.json({ photo })
@@ -87,7 +87,7 @@ export async function DELETE(
     }
 
     // 권한 확인: 작성자, admin, manager만 삭제 가능
-    const isAuthor = photo.authorId === user.id
+    const isAuthor = photo.userId === user.id
     const isAdmin = user.role === 'admin' || user.role === 'manager'
     if (!isAuthor && !isAdmin) {
       return NextResponse.json(

@@ -14,7 +14,7 @@ interface Photo {
   imagePath: string
   likeCount: number
   viewCount: number
-  author: { nickname: string }
+  user: { nickname: string }
 }
 
 export default function GalleryGrid() {

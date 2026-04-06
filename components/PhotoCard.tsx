@@ -10,10 +10,10 @@ interface PhotoCardProps {
   imagePath: string
   likeCount: number
   viewCount: number
-  author: { nickname: string }
+  user: { nickname: string }
 }
 
-export function PhotoCard({ id, title, thumbnailPath, imagePath, likeCount, viewCount, author }: PhotoCardProps) {
+export function PhotoCard({ id, title, thumbnailPath, imagePath, likeCount, viewCount, user }: PhotoCardProps) {
   const src = thumbnailPath || imagePath
 
   return (
@@ -37,7 +37,7 @@ export function PhotoCard({ id, title, thumbnailPath, imagePath, likeCount, view
       <div className="p-3 space-y-1">
         <h3 className="font-medium text-sm line-clamp-1">{title}</h3>
         <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>{author.nickname}</span>
+          <span>{user.nickname}</span>
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
               <Heart className="w-3 h-3" />

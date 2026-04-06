@@ -26,7 +26,7 @@ interface Photo {
   likeCount: number
   viewCount: number
   createdAt: string
-  author: {
+  user: {
     id: number
     nickname: string
   }
@@ -280,7 +280,7 @@ export default function PhotoGalleryAdminPage() {
                         </a>
                       </td>
                       <td className="p-3 text-sm text-muted-foreground">
-                        {photo.author?.nickname || "-"}
+                        {photo.user?.nickname || "-"}
                       </td>
                       <td className="p-3 text-center text-sm text-muted-foreground">
                         {photo.viewCount}

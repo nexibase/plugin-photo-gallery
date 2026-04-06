@@ -34,18 +34,18 @@ export async function GET(request: NextRequest) {
     ])
 
     // 별도 쿼리로 작성자 정보 조회
-    const authorIds = [...new Set(rawPhotos.map(p => p.authorId))]
-    const authors = authorIds.length > 0
+    const userIds = [...new Set(rawPhotos.map(p => p.userId))]
+    const users = userIds.length > 0
       ? await prisma.user.findMany({
-          where: { id: { in: authorIds } },
+          where: { id: { in: userIds } },
           select: { id: true, nickname: true },
         })
       : []
-    const authorMap = new Map(authors.map(a => [a.id, a]))
+    const userMap = new Map(users.map(a => [a.id, a]))
 
     const photos = rawPhotos.map(p => ({
       ...p,
-      author: authorMap.get(p.authorId) || { id: p.authorId, nickname: '알 수 없음' },
+      user: userMap.get(p.userId) || { id: p.userId, nickname: '알 수 없음' },
     }))
 
     return NextResponse.json({
