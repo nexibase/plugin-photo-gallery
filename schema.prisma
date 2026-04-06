@@ -1,0 +1,32 @@
+model GalleryPhoto {
+  id            Int              @id @default(autoincrement())
+  authorId      Int
+  title         String           @db.VarChar(200)
+  description   String?          @db.Text
+  imagePath     String           @db.VarChar(500)
+  thumbnailPath String?          @db.VarChar(500)
+  likeCount     Int              @default(0)
+  viewCount     Int              @default(0)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  reactions     PhotoReaction[]
+
+  @@index([authorId])
+  @@index([createdAt])
+  @@fulltext([title, description])
+  @@map("gallery_photos")
+}
+
+model PhotoReaction {
+  id        Int          @id @default(autoincrement())
+  userId    Int
+  photoId   Int
+  type      String       @db.VarChar(20)
+  createdAt DateTime     @default(now())
+  photo     GalleryPhoto @relation(fields: [photoId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, photoId, type])
+  @@index([photoId])
+  @@index([userId])
+  @@map("photo_reactions")
+}
