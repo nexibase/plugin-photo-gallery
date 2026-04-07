@@ -8,7 +8,8 @@ import Link from "next/link"
 interface Photo {
   id: number
   title: string
-  thumbnailUrl: string
+  thumbnailPath: string | null
+  imagePath: string
   likeCount: number
 }
 
@@ -53,7 +54,7 @@ export default function RecentPhotos({ settings }: { settings?: Record<string, a
                 className="relative aspect-square rounded overflow-hidden group"
               >
                 <img
-                  src={photo.thumbnailUrl}
+                  src={photo.thumbnailPath || photo.imagePath}
                   alt={photo.title}
                   className="w-full h-full object-cover transition-transform group-hover:scale-110"
                 />
