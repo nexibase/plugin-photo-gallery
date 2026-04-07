@@ -23,30 +23,18 @@ export async function GET(request: NextRequest) {
       where.title = { contains: search }
     }
 
-    const [rawPhotos, total] = await Promise.all([
+    const [photos, total] = await Promise.all([
       prisma.galleryPhoto.findMany({
         where,
         skip,
         take: limit,
         orderBy: { createdAt: 'desc' },
+        include: {
+          user: { select: { id: true, nickname: true } },
+        },
       }),
       prisma.galleryPhoto.count({ where }),
     ])
-
-    // 별도 쿼리로 작성자 정보 조회
-    const userIds = [...new Set(rawPhotos.map(p => p.userId))]
-    const users = userIds.length > 0
-      ? await prisma.user.findMany({
-          where: { id: { in: userIds } },
-          select: { id: true, nickname: true },
-        })
-      : []
-    const userMap = new Map(users.map(a => [a.id, a]))
-
-    const photos = rawPhotos.map(p => ({
-      ...p,
-      user: userMap.get(p.userId) || { id: p.userId, nickname: '알 수 없음' },
-    }))
 
     return NextResponse.json({
       photos,

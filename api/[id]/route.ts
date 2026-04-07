@@ -22,21 +22,13 @@ export async function GET(
     }
 
     // 조회수 증가 + 사진 조회
-    const rawPhoto = await prisma.galleryPhoto.update({
+    const photo = await prisma.galleryPhoto.update({
       where: { id: photoId },
       data: { viewCount: { increment: 1 } },
+      include: {
+        user: { select: { id: true, nickname: true, image: true } },
+      },
     })
-
-    // 별도 쿼리로 작성자 정보 조회
-    const userInfo = await prisma.user.findUnique({
-      where: { id: rawPhoto.userId },
-      select: { id: true, nickname: true, image: true },
-    })
-
-    const photo = {
-      ...rawPhoto,
-      user: userInfo || { id: rawPhoto.userId, nickname: '알 수 없음', image: null },
-    }
 
     return NextResponse.json({ photo })
 
